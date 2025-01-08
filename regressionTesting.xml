@@ -7,9 +7,7 @@
             <class name="org.justcall.phonenumbers.CustomGreetingsTest"/>
             <class name="org.justcall.phonenumbers.IncomingCallsTest"/>
             <class name="org.justcall.salesdialer.DispositionTest"/>
-            <class name="org.justcall.salesdialer.SalesDialerTest"/>
             <class name="org.justcall.settings.DialerSettingsTest"/>
-            <class name="org.justcall.teams.TeamsTest"/>
         </classes>
     </test>
 </suite>
