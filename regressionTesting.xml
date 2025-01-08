@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.1.dtd">
+<suite name="Just Call testing Suite">
+    <test name="Regression test cases">
+        <classes>
+            <class name="org.justcall.dialer.TransferOutboundCallTest"/>
+            <class name="org.justcall.phonenumbers.BusinessHoursTest"/>
+            <class name="org.justcall.phonenumbers.CustomGreetingsTest"/>
+            <class name="org.justcall.phonenumbers.IncomingCallsTest"/>
+            <class name="org.justcall.salesdialer.DispositionTest"/>
+            <class name="org.justcall.salesdialer.SalesDialerTest"/>
+            <class name="org.justcall.settings.DialerSettingsTest"/>
+            <class name="org.justcall.teams.TeamsTest"/>
+        </classes>
+    </test>
+</suite>
