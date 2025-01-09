@@ -140,28 +140,48 @@ public class IncomingCalls extends WebPage {
     @Step("Set up IVR with greeting messages and options")
     public void setupIVR(String reusableURL) {
         driver.get(reusableURL);
-        selectSettingOptionFromList("incoming calls");
-        selectOptionFromIncomingCallsSettings(1);
-        installNowButton.click();
-        updateInstallButton.click();
-        String parentWindow = driver.getWindowHandle();
-        createIvrButton.click();
-        Set<String> windowHandles = driver.getWindowHandles();
-        for (String handle : windowHandles) {
-            if ((!handle.equals(parentWindow))) {
-                driver.switchTo().window(handle);
-                break;
-            }
-        }
-        action.moveToElement(ivrNameInputField).build().perform();
-        ivrNameInputField.sendKeys("Sales IVR");
-        if (addGreetingMsgButton.isDisplayed()) {
-            waitForElementToBeClickable(addGreetingMsgButton);
-            addGreetingMsgButton.click();
+        clickInstallButton();
+        clickCreateIVRButton();
+        handleIvrNameInputField();
+        handleOptionFields();
+        handleNoOptionMsgTextArea();
+        handleWrongOptionMsgButton();
+        handleSaveChangeButton();
+
+    }
+
+    private void handleSaveChangeButton() {
+        Select digitSelect = new Select(digitSelectDropdown);
+        digitSelect.selectByIndex(1);
+        customMsgTextArea.sendKeys("Forward call to sales");
+        emailInputField.sendKeys("lakshmi29kumari@gmail.com");
+        saveChangeButton.click();
+    }
+
+    private void handleWrongOptionMsgButton() {
+        if (addWrongOptionMsgButton.isDisplayed()) {
+            waitForElementToBeClickable(addWrongOptionMsgButton);
+            addWrongOptionMsgButton.click();
         } else {
-            waitForElementToBeClickable(editGreetingMsgButton);
-            editGreetingMsgButton.click();
+            waitForElementToBeClickable(editWrongOptionMsgButton);
+            editWrongOptionMsgButton.click();
         }
+        if (!wrongOptionMsgTextRadioButton.isSelected()) {
+            wrongOptionMsgTextRadioButton.click();
+        }
+        wrongOptionTextArea.sendKeys("Oops, that is not a valid option. Let's repeat your choices.");
+        waitForElementToBeClickable(saveWrongOptionMsgButton);
+        saveWrongOptionMsgButton.click();
+    }
+
+    private void handleNoOptionMsgTextArea() {
+        noOptionMsgTextArea.click();
+        noOptionMsgTextArea.sendKeys("Oops, it looks like you did not select an option.");
+        waitForElementToBeClickable(saveNoOptionMsgButton);
+        saveNoOptionMsgButton.click();
+    }
+
+    private void handleOptionFields() {
         if (!greetingTextRadioButton.isSelected()) {
             waitForElementToBeClickable(greetingTextRadioButton);
             greetingTextRadioButton.click();
@@ -182,33 +202,38 @@ public class IncomingCalls extends WebPage {
             waitForElementToBeClickable(noOptionTextRadioButton);
             noOptionTextRadioButton.click();
         }
+    }
 
-        noOptionMsgTextArea.click();
-        noOptionMsgTextArea.sendKeys("Oops, it looks like you did not select an option.");
-        waitForElementToBeClickable(saveNoOptionMsgButton);
-        saveNoOptionMsgButton.click();
-
-
-        if (addWrongOptionMsgButton.isDisplayed()) {
-            waitForElementToBeClickable(addWrongOptionMsgButton);
-            addWrongOptionMsgButton.click();
+    private void handleIvrNameInputField() {
+        waitForElementToBeVisible(ivrNameInputField);
+        ivrNameInputField.sendKeys("Sales IVR");
+        if (addGreetingMsgButton.isDisplayed()) {
+            waitForElementToBeClickable(addGreetingMsgButton);
+            addGreetingMsgButton.click();
         } else {
-            waitForElementToBeClickable(editWrongOptionMsgButton);
-            editWrongOptionMsgButton.click();
+            waitForElementToBeClickable(editGreetingMsgButton);
+            editGreetingMsgButton.click();
         }
-        if (!wrongOptionMsgTextRadioButton.isSelected()) {
-            wrongOptionMsgTextRadioButton.click();
+    }
+
+    private void clickCreateIVRButton() {
+        Set<String> parentWindows = driver.getWindowHandles();
+        createIvrButton.click();
+
+        Set<String> windowHandles = driver.getWindowHandles();
+        for (String handle : windowHandles) {
+            if (!parentWindows.contains(handle)) {
+                driver.switchTo().window(handle);
+                break;
+            }
         }
-        wrongOptionTextArea.sendKeys("Oops, that is not a valid option. Let's repeat your choices.");
-        waitForElementToBeClickable(saveWrongOptionMsgButton);
-        saveWrongOptionMsgButton.click();
+    }
 
-        Select digitSelect = new Select(digitSelectDropdown);
-        digitSelect.selectByIndex(1);
-        customMsgTextArea.sendKeys("Forward call to sales");
-        emailInputField.sendKeys("lakshmi29kumari@gmail.com");
-        saveChangeButton.click();
-
+    private void clickInstallButton() {
+        selectSettingOptionFromList("incoming calls");
+        selectOptionFromIncomingCallsSettings(1);
+        installNowButton.click();
+        updateInstallButton.click();
     }
 
     @Step("Select an option from incoming calls settings")
